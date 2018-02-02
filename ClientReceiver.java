@@ -15,7 +15,7 @@ public class ClientReceiver extends Thread {
   public void run() {
     // Print to the user whatever we get from the server:
     try {
-      while (true) {
+      while (!Thread.currentThread().isInterrupted()) {
         String s = server.readLine(); // Matches FFFFF in ServerSender.java
         if (s != null)                
           System.out.println(s);
@@ -26,6 +26,13 @@ public class ClientReceiver extends Thread {
     catch (IOException e) {
       Report.errorAndGiveUp("Server seems to have died " + e.getMessage());
     }
+    
+    try {
+		server.close();
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
   }
 }
 

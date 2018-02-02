@@ -17,6 +17,9 @@ class Client {
     String nickname = args[0];
     String hostname = args[1];
 
+    if (nickname.equals("quit")) {
+    	Report.errorAndGiveUp("Username cannot be \"quit\" ");
+    }
     // Open sockets:
     PrintStream toServer = null;
     BufferedReader fromServer = null;
@@ -37,14 +40,10 @@ class Client {
     // Tell the server what my nickname is:
     toServer.println(nickname); // Matches BBBBB in Server.java
      
-    // Create two client threads of a diferent nature:
-    ClientSender sender = new ClientSender(nickname,toServer);
+    // Create two client threads of a different nature:
     ClientReceiver receiver = new ClientReceiver(fromServer);
+    ClientSender sender = new ClientSender(nickname, toServer, receiver);
 
-    // Run them in parallel:
-    sender.start();
-    receiver.start();
-    
     // Wait for them to end and close sockets.
     try {
       sender.join();
