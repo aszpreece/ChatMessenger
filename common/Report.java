@@ -1,4 +1,4 @@
-import java.io.*;
+package common;
 
 // This is to handle logging of normal and erroneous behaviours.
 

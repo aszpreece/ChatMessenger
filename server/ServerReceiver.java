@@ -1,6 +1,10 @@
+package server;
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.*;
+
+import common.Message;
+import common.Report;
 
 // Gets messages from client and puts them in a queue, for another
 // thread to forward to the appropriate client.

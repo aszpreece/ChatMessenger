@@ -1,6 +1,8 @@
-import java.net.*;
+package server;
 import java.io.*;
 import java.util.concurrent.*;
+
+import common.Message;
 
 // Continuously reads from message queue for a particular client,
 // forwarding to the client.

@@ -1,3 +1,4 @@
+package server;
 // Usage:
 //        java Server
 //
@@ -6,6 +7,10 @@
 
 
 import java.net.*;
+
+import common.Port;
+import common.Report;
+
 import java.io.*;
 
 public class Server {

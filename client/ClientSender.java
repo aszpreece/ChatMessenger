@@ -1,8 +1,11 @@
+package client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+
+import common.Report;
 
 // Repeatedly reads recipient's nickname and text from the user in two
 // separate lines, sending them to the server (read by ServerReceiver
@@ -12,12 +15,13 @@ public class ClientSender extends Thread {
 
 	private String nickname;
 	private PrintStream server;
-	private ClientReceiver reciever;
 
-	ClientSender(String nickname, PrintStream server, ClientReceiver receiver) {
+	ClientThreadHandler handler;
+
+	ClientSender(String nickname, PrintStream server, ClientThreadHandler handler) {
 		this.nickname = nickname;
-		this.server = server;	
-		this.reciever = receiver;
+		this.server = server;
+		this.handler = handler;
 	}
 
 	public void run() {
@@ -29,25 +33,26 @@ public class ClientSender extends Thread {
 			while (!Thread.currentThread().isInterrupted()) {
 				String recipient = user.readLine();
 				if (recipient.equals("quit")) {
-					reciever.interrupt();
-					return;
+					Report.behaviour("Client is exiting...");
+					server.println(-1);
+					handler.close();
+				} else {
+					String text = user.readLine();
+					server.println(recipient); // Matches CCCCC in ServerReceiver
+					server.println(text); // Matches DDDDD in ServerReceiver
 				}
-				String text = user.readLine();
-				server.println(recipient); // Matches CCCCC in ServerReceiver
-				server.println(text); // Matches DDDDD in ServerReceiver
 			}
-			
+
 		} catch (IOException e) {
 			Report.errorAndGiveUp("Communication broke in ClientSender" + e.getMessage());
 		}
-		
+
 		try {
 			user.close();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		server.close();
 	}
 }
 
