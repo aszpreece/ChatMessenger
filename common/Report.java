@@ -4,16 +4,16 @@ package common;
 
 public class Report {
 
-  public static void behaviour(String message) {
-    System.err.println(message);
-  }
+	public static void behaviour(String message) {
+		System.err.println(message);
+	}
 
-  public static void error(String message) {
-    System.err.println(message);
-  }
+	public static void error(String message) {
+		System.err.println(message);
+	}
 
-  public static void errorAndGiveUp(String message) {
-    Report.error(message);
-    System.exit(1);
-  }
+	public static void errorAndGiveUp(String message) {
+		Report.error(message);
+		System.exit(1);
+	}
 }

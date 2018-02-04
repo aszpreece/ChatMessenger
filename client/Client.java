@@ -9,7 +9,6 @@ import common.Report;
 
 class Client {
 
-	
 	public static void main(String[] args) {
 
 		// Check correct usage:
@@ -43,7 +42,7 @@ class Client {
 		toServer.println(nickname); // Matches BBBBB in Server.java
 
 		// Create handler for our client threads
-		ClientThreadHandler handler = new ClientThreadHandler(nickname, fromServer, toServer);
+		ClientThreadHandler handler = new ClientThreadHandler(nickname, fromServer, toServer, server);
 
 		handler.start();
 
@@ -59,7 +58,7 @@ class Client {
 		} catch (InterruptedException e) {
 			Report.errorAndGiveUp("Unexpected interruption " + e.getMessage());
 		}
-		
+
 		Report.behaviour("Client has quit");
 	}
 }

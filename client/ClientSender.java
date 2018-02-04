@@ -31,15 +31,17 @@ public class ClientSender extends Thread {
 		try {
 			// Then loop forever sending messages to recipients via the server:
 			while (!Thread.currentThread().isInterrupted()) {
-				String recipient = user.readLine();
-				if (recipient.equals("quit")) {
-					Report.behaviour("Client is exiting...");
-					server.println(-1);
-					handler.close();
-				} else {
-					String text = user.readLine();
-					server.println(recipient); // Matches CCCCC in ServerReceiver
-					server.println(text); // Matches DDDDD in ServerReceiver
+				if (user.ready()) {
+					String recipient = user.readLine();
+					if (recipient.equals("quit")) {
+						Report.behaviour("Client is exiting...");
+						server.println(recipient);
+						handler.close();
+					} else {
+						String text = user.readLine();
+						server.println(recipient); // Matches CCCCC in ServerReceiver
+						server.println(text); // Matches DDDDD in ServerReceiver
+					}
 				}
 			}
 

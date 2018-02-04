@@ -1,7 +1,9 @@
 package client;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.net.Socket;
 
 import common.Report;
 
@@ -12,19 +14,30 @@ public class ClientThreadHandler {
 	String nickname;
 	BufferedReader fromServer;
 	PrintStream toServer;
+	Socket server;
 
-	public ClientThreadHandler(String nickname, BufferedReader fromServer, PrintStream toServer) {
+	public ClientThreadHandler(String nickname, BufferedReader fromServer, PrintStream toServer, Socket server) {
 		this.nickname = nickname;
 		this.fromServer = fromServer;
 		this.toServer = toServer;
+		this.server = server;
 		reciever = new ClientReceiver(nickname, fromServer, this);
 		sender = new ClientSender(nickname, toServer, this);
 	}
 
 	public void close() {
-		
-		reciever.interrupt();
+		// 1. interrupt sender so it can notify server of disconnect
+		// 2. close down the server connection, unblocking the readline method in the
+		// reciever and making it return null.
+		// 3. interrupt the reciever
 		sender.interrupt();
+		reciever.interrupt();
+		try {
+			server.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void start() {
@@ -46,7 +59,7 @@ public class ClientThreadHandler {
 		Report.behaviour("Sender thread has exited");
 		reciever.join();
 		Report.behaviour("Reciever thread has exited");
-		
+
 	}
 
 }

@@ -11,25 +11,33 @@ public class ClientReceiver extends Thread {
 
 	private BufferedReader server;
 	private String nickname;
+	private ClientThreadHandler handler;
 
 	ClientReceiver(String nickname, BufferedReader server, ClientThreadHandler clientThreadHandler) {
 		this.server = server;
 		this.nickname = nickname;
+		this.handler = clientThreadHandler;
+
 	}
 
 	public void run() {
 		// Print to the user whatever we get from the server:
 		try {
 			String s;
-			while (!Thread.currentThread().isInterrupted() && (s = server.readLine()) != null) {
+			while (!Thread.currentThread().isInterrupted()) {
 				// Matches FFFFF in ServerSender.java
-				if (s != null)
-					System.out.println(s);
-				
+				s = server.readLine();
+				if (s == null) {
+					Report.error("Server seems to have died ");
+					break;
+				}
+				System.out.println(s);
 			}
 		} catch (IOException e) {
-			Report.error("Server seems to have died " + e.getMessage());
+			if (!Thread.currentThread().isInterrupted())
+				Report.error("Server seems to have died " + e.getMessage());
 		}
+		handler.close();
 
 	}
 }
