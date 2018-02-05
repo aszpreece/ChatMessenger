@@ -1,11 +1,8 @@
-package client;
+
 
 import java.io.*;
 import java.io.PrintStream;
 import java.net.*;
-
-import common.Port;
-import common.Report;
 
 class Client {
 

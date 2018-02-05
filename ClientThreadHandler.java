@@ -1,11 +1,9 @@
-package client;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-
-import common.Report;
 
 public class ClientThreadHandler {
 
@@ -27,9 +25,10 @@ public class ClientThreadHandler {
 
 	public void close() {
 		// 1. interrupt sender so it can notify server of disconnect
-		// 2. close down the server connection, unblocking the readline method in the
+		// 2. interrupt the reciever
+		// 3. close down the server connection, unblocking the readline method in the
 		// reciever and making it return null.
-		// 3. interrupt the reciever
+	
 		sender.interrupt();
 		reciever.interrupt();
 		try {

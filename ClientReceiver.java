@@ -1,8 +1,6 @@
-package client;
+
 
 import java.io.*;
-
-import common.Report;
 
 // Gets messages from other clients via the server (by the
 // ServerSender thread).

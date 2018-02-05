@@ -1,4 +1,4 @@
-package server;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.HashMap;
-
-import common.Report;
 
 public class ServerThreadHandler {
 	
@@ -37,7 +35,7 @@ public class ServerThreadHandler {
 
 	public void close() {
 		Report.behaviour(nickname + " is disconnecting, shutting down threads...");
-		table.getQueue(nickname).clear();
+		table.remove(nickname);
 		sender.interrupt();
 		receiver.interrupt();
 	}

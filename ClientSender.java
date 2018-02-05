@@ -1,11 +1,9 @@
-package client;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-
-import common.Report;
 
 // Repeatedly reads recipient's nickname and text from the user in two
 // separate lines, sending them to the server (read by ServerReceiver

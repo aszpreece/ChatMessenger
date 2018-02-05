@@ -1,9 +1,6 @@
-package server;
-// Each nickname has a different incomming-message queue.
+
 
 import java.util.concurrent.*;
-
-import common.Message;
 
 public class ClientTable {
 
@@ -17,6 +14,10 @@ public class ClientTable {
 
 	public void add(String nickname) {
 		queueTable.put(nickname, new LinkedBlockingQueue<Message>());
+	}
+	
+	public void remove(String nickname) {
+		queueTable.remove(nickname);
 	}
 
 	// Returns null if the nickname is not in the table:
