@@ -3,12 +3,14 @@
   * Based on the client-server architecture with server threads and
     socket communication.
 
-# Solution
+# My Solution
+  * Created two new handler classes that manage the running of the sender and reciever threads for the client and server respectively
+  * Add simple if statement along with error message to prevent a client using the nickname 'quit'
+  * Upon a user sending "quit" to the server, the user sender thread calls its handler's close method, which interrupts the sender and causes it to stop. To get the blocking method readline in teh reciever to exit, the server socket must also be closed to make it return null.
+  * Modifying the server was easier as the code for sending is must simpler and there are no annoying blocking methods.
+  * The user's are removed from the cleint table as they disconnect.
 
-  * [Lecture code](https://git.cs.bham.ac.uk/mhe/SWW-2017-2018/tree/master/LectureNotesAndCode/CommunicationAndConcurrency/6-messaging-system)
-  * [Lecture diagram](https://git.cs.bham.ac.uk/mhe/SWW-2017-2018/blob/master/LectureNotesAndCode/CommunicationAndConcurrency/6-messaging-system/messaging-board.jpg)
-
-# Specification
+# Specification (From lecturer)
 
   * Implement a simple messaging system, based on the client-server
     architecture, using threads to serve the clients.
@@ -31,55 +33,6 @@ Once my client is running, I can send a message to John by writing
 and the second line is the message. That's all we can do, again and
 again, in this simpled minded design. There is no provision for the
 client to end.
-
-# Proposed solution
-
-  * There are a variety of ways of approaching this. I will take the
-    opportunity to teach Maps and BlockingQueues:
-
-  * [Map](https://docs.oracle.com/javase/tutorial/collections/interfaces/map.html)
-  * [ConcurrentHashMap](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html)
-  * [ConcurrentMap](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentMap.html)
-  * [BlockingQueue](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/BlockingQueue.html)
-
-## Solution outline
-
-  * We have two threads for each client.
-
-  * We have 2*n threads in a server attending n clients.
-
-  * Each thread, in the client or server, does either output or input,
-    but not both.
-
-  * In the server, we use blocking queues to communicate between threads.
-
-  * We use a map to keep a table associating queues to clients.
-
-  * This is a simplified picture:
-
-
-```
- user types  +--------------+     socket    +----------------+  queue for suitable user
- --------->  | ClientSender | ------------> | ServerReceiver | ------------------------>
-             | thread       |               | thread         |  (determine using table)
-             +--------------+               +----------------+
-                                                           
-                                                           
-                                                           
-                                                           
-                                                           
- user reads  +----------------+    socket   +--------------+  my user's queue
- <---------  | ClientReceiver | <---------- | ServerSender | <-----------------
-             | thread         |             | thread       |
-             +----------------+             +--------------+ 
-```
- 
-
-  * But reality is more complicated.
-
-  * There is, in the server, one queue for each client.
-  * ServerReceiver directs the message to the appropriate queue.
-  * However, ServerSender reads from one queue for a specific client
 
 ## Report.java
 
